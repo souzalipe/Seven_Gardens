@@ -108,6 +108,46 @@ footer {
 
 }
 
+/* Estilo para o formulário de ordenação */
+form#order-form {
+  margin: 20px 0;
+  text-align: center;
+}
+
+label {
+  font-size: 18px;
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+select {
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* Estilo para o botão de comprar */
+.comprar-btn {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin-top: 10px;
+}
+
+.comprar-btn:hover {
+  background-color: #45a049;
+}
+
+
 .finalizar-compra-btn {
   background-color: #405b39;
   color: white;

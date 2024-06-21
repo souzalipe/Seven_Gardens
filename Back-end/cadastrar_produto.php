@@ -5,7 +5,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     include('../Front-end/PHP/connect.php');  // Inclui e executa o arquivo, conectando ao banco de dados com PDO
 
     // Verifica se todas as variáveis estão definidas antes de acessá-las
-    if (isset($_POST["nomeProduto"], $_POST["precoProduto"], $_POST["descricaoProduto"], $_POST["categoriaProduto"], $_POST["subcategoriaProduto"], $_FILES["imagemProduto"], $_POST["quantidadeProduto"])) {
+    if (isset($_POST["nomeProduto"], $_POST["precoProduto"], $_POST["descricaoProduto"], $_POST["categoriaProduto"], $_POST["subcategoriaProduto"], $_POST["disponivelVenda"], $_FILES["imagemProduto"], $_POST["quantidadeProduto"])) {
+
+        // Verifica se está disponível para venda
+        $disponivelVenda = $_POST["disponivelVenda"];
+        if ($disponivelVenda === "0") {
+            echo json_encode(['success' => false, 'message' => 'Produto não pode ser cadastrado porque não está disponível para venda.']);
+            exit; // Termina a execução do script
+        }
+
         $nome = $_POST["nomeProduto"];
         $preco = $_POST["precoProduto"];
         $descricao = $_POST["descricaoProduto"];
@@ -53,3 +61,4 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
     // Não é necessário fechar a conexão PDO explicitamente
 }
+?>

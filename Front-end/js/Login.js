@@ -1,3 +1,5 @@
+alert("Nome de usuário: adminM ----- Senha: senhamas");
+
 document.addEventListener('DOMContentLoaded', function () {
   const loginForm = document.getElementById('loginForm');
   const userNameInput = document.getElementById('userName');
@@ -109,3 +111,5 @@ document.getElementById('togglePassword').addEventListener('click', function (e)
   passwordInput.setAttribute('type', type);
   this.classList.toggle('fa-eye-slash');
 });
+
+

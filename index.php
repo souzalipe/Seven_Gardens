@@ -13,6 +13,9 @@ require $path;
 
 // Verificar se o usuário é um 'Master' ou 'Colaborador'
 $isUserMasterOrColaborador = isset($_SESSION['usuario_tipo']) && in_array($_SESSION['usuario_tipo'], ['Master', 'Colaborador']);
+
+// Obtendo o parâmetro de ordenação
+$order = isset($_GET['order']) ? $_GET['order'] : 'asc';
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -56,10 +59,23 @@ $isUserMasterOrColaborador = isset($_SESSION['usuario_tipo']) && in_array($_SESS
   </span>
   <hr>
 
+  <!-- Formulário de ordenação -->
+  <form method="GET" action="index.php">
+    <label for="order">Ordenar por preço:</label>
+    <select name="order" id="order" onchange="this.form.submit()">
+      <option value="asc" <?php echo $order == 'asc' ? 'selected' : ''; ?>>Menor para maior</option>
+      <option value="desc" <?php echo $order == 'desc' ? 'selected' : ''; ?>>Maior para menor</option>
+    </select>
+  </form>
+
   <!-- inicio Bloco de Produtos -->
   <div class="bloco-produtos">
     <?php
-    $query = "SELECT idProduto, nome, preco, descricao, categoria, subcategoria, imagem FROM produto";
+    $query = "
+      SELECT p.idProduto, p.nome, p.preco, p.descricao, p.categoria, p.subcategoria, p.imagem, e.quantidade 
+      FROM produto p 
+      LEFT JOIN estoque e ON p.idProduto = e.idProduto
+      ORDER BY p.preco $order";
     $stmt = $pdo->prepare($query);
     $stmt->execute();
 
@@ -72,6 +88,7 @@ $isUserMasterOrColaborador = isset($_SESSION['usuario_tipo']) && in_array($_SESS
       echo "<p class='descricao'>" . htmlspecialchars($row["descricao"]) . "</p>";
       echo "<p class='categoria'>Categoria: " . htmlspecialchars($row["categoria"]) . "</p>";
       echo "<p class='subcategoria'>Subcategoria: " . htmlspecialchars($row["subcategoria"]) . "</p>";
+      echo "<p class='quantidade'>Quantidade em estoque: " . htmlspecialchars($row["quantidade"]) . "</p>";
 
       if ($isUserMasterOrColaborador) {
         echo "<div class='organiza_btns'>"; // Container para os botões
@@ -87,11 +104,7 @@ $isUserMasterOrColaborador = isset($_SESSION['usuario_tipo']) && in_array($_SESS
     ?>
   </div>
 
-
   <!-- Fim Bloco de Produtos -->
-
-
-  <!-- Fim do Bloco de Produtos -->
 
   <div id="itensCarrinho" class="carrinho">
     <!-- Itens do carrinho serão adicionados aqui -->
